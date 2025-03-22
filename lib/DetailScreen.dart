@@ -36,7 +36,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
   List<double> getRandomSample(List<double> list, int sampleSize) {
     if (list.isEmpty || sampleSize <= 0) {
-      return []; // Boş liste döndür
+      return [];
     }
 
     final random = Random();
@@ -117,7 +117,7 @@ class _DetailScreenState extends State<DetailScreen> {
           ElevatedButton(
             onPressed: () {
               setState(() {
-                // Sistematik örnekleme yap
+
               });
             },
             child: Text('Sistematik Örnekleme Yap'),
@@ -142,7 +142,7 @@ class _DetailScreenState extends State<DetailScreen> {
           ElevatedButton(
             onPressed: () {
               setState(() {
-                // Örnekleme yap
+
               });
             },
             child: Text('Örnekleme Yap'),
@@ -167,7 +167,7 @@ class _DetailScreenState extends State<DetailScreen> {
           ElevatedButton(
             onPressed: () {
               setState(() {
-                // Örnekleme yap
+
               });
             },
             child: Text('Örnekleme Yap'),
@@ -261,7 +261,7 @@ class _DetailScreenState extends State<DetailScreen> {
           ElevatedButton(
             onPressed: () {
               setState(() {
-                // Rastgele int değerleri üret
+
               });
             },
             child: Text('Rastgele Değerler Üret'),
@@ -270,7 +270,6 @@ class _DetailScreenState extends State<DetailScreen> {
         ],
       );
     }
-
     else {
       content = Text('${widget.pageNumber}. Sayfanın İçeriği');
     }

@@ -18,6 +18,10 @@ double calculateMode(List<double> list) {
   return mode;
 }
 
+
+
+
+
 // Medyan hesaplama fonksiyonu
 double calculateMedian(List<double> list) {
   if (list.isEmpty) return 0.0;
@@ -30,12 +34,18 @@ double calculateMedian(List<double> list) {
   }
 }
 
+
+
+
 // Geometrik ortalama hesaplama fonksiyonu
 num calculateGeometricMean(List<double> list) {
   if (list.isEmpty) return 0.0;
   double product = list.fold(1.0, (p, element) => p * element);
   return pow(product, 1.0 / list.length);
 }
+
+
+
 
 // Harmonik ortalama hesaplama fonksiyonu
 double calculateHarmonicMean(List<double> list) {
@@ -49,14 +59,14 @@ double calculateHarmonicMean(List<double> list) {
 
 
 
+//Basit random deger veren fonksiyon
 List<double> getRandomSample(List<double> list, int sampleSize) {
   if (list.isEmpty || sampleSize <= 0) {
     return [];
   }
-
   final random = Random();
   final sample = <double>[];
-  final usedIndices = <int>{}; // Kullanılan indexleri takip et
+  final usedIndices = <int>{};
 
   if (sampleSize <= list.length) {
     // Aynı elemanları tekrar etme
@@ -80,23 +90,7 @@ List<double> getRandomSample(List<double> list, int sampleSize) {
 
 
 
-List<double> getSystematicSample(List<double> list, int sampleSize) {
-  if (list.isEmpty || sampleSize <= 0 || sampleSize > list.length) {
-    return [];
-  }
 
-  final random = Random();
-  final sample = <double>[];
-  final interval = list.length ~/ sampleSize;
-  var startIndex = random.nextInt(interval);
-
-  for (int i = 0; i < sampleSize; i++) {
-    sample.add(list[startIndex]);
-    startIndex = (startIndex + interval) % list.length;
-  }
-
-  return sample;
-}
 
 
 List<double> getSequentialSample(List<double> list, int sampleSize) {
@@ -106,6 +100,8 @@ List<double> getSequentialSample(List<double> list, int sampleSize) {
 
   return list.sublist(0, sampleSize);
 }
+
+
 
 
 
@@ -131,7 +127,7 @@ List<int> generateRandomIntValues(int smallValue, int largeValue, int count) {
   final random = Random();
   final values = <int>[];
   for (int i = 0; i < count; i++) {
-    values.add(smallValue + random.nextInt(largeValue - smallValue + 1)); // +1 ekleyerek largeValue'u da dahil edin
+    values.add(smallValue + random.nextInt(largeValue - smallValue + 1));
   }
   return values;
 }
@@ -154,21 +150,20 @@ List<int> generateSystematicSample(int smallValue, int largeValue, int sampleSiz
   return values;
 }
 
-
 int calculateClassCount(List<double> list) {
   final n = list.length;
-  return (sqrt(n)).ceil(); // √n'yi yuvarla
+  return (sqrt(n)).ceil();
 }
 
 double calculateClassWidth(List<double> list, int classCount) {
-  double min = list.reduce((a, b) => a < b ? a : b); // min'i tanımla
-  double max = list.reduce((a, b) => a > b ? a : b); // max'ı tanımla
+  double min = list.reduce((a, b) => a < b ? a : b);
+  double max = list.reduce((a, b) => a > b ? a : b);
   final range = max - min;
   return (range / classCount).ceilToDouble();
 }
 
 List<double> calculateClassLimits(List<double> list, double classWidth, int classCount) {
-  double min = list.reduce((a, b) => a < b ? a : b); // min'i tanımla
+  double min = list.reduce((a, b) => a < b ? a : b);
   final limits = <double>[];
   for (int i = 0; i < classCount; i++) {
     limits.add(min + i * classWidth);

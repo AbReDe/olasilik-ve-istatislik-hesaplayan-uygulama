@@ -13,10 +13,10 @@ class _FirstScreenState extends State<FirstScreen> {
   List<double> itemList = [];
   TextEditingController _controller = TextEditingController();
 
-  // Aritmetik ortalama hesaplama fonksiyonu
+
   double calculateAverage(List<double> list) {
     if (list.isEmpty) {
-      return 0.0; // Liste boşsa 0 döndür
+      return 0.0;
     }
     double sum = list.fold(0.0, (previousValue, element) => previousValue + element);
     return sum / list.length;
@@ -79,7 +79,7 @@ class _FirstScreenState extends State<FirstScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              // Ortalama hesaplama ve ikinci ekrana gönderme
+
               double average = calculateAverage(itemList);
               Navigator.push(
                 context,

@@ -4,7 +4,7 @@ import 'DetailScreen.dart';
 
 class SecondScreen extends StatelessWidget {
   final List<double> itemList;
-  final double average; // Ortalama değeri
+  final double average;
 
   final List<String> buttonNames = [
     'Istatislikler',// 1
@@ -42,7 +42,7 @@ class SecondScreen extends StatelessWidget {
                       builder: (context) => DetailScreen(
                         pageNumber: index + 1,
                         average: average,
-                        itemList: itemList, // itemList'i geçirin
+                        itemList: itemList,
                       ),
                     ),
                   );
