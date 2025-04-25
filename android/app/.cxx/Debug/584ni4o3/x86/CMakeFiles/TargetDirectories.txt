@@ -1,0 +1,2 @@
+C:/android uygulama/vizeproject/android/app/.cxx/Debug/584ni4o3/x86/CMakeFiles/edit_cache.dir
+C:/android uygulama/vizeproject/android/app/.cxx/Debug/584ni4o3/x86/CMakeFiles/rebuild_cache.dir

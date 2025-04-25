@@ -60,60 +60,79 @@ double calculateHarmonicMean(List<double> list) {
 
 
 //Basit random deger veren fonksiyon
-List<double> getRandomSample(List<double> list, int sampleSize) {
-  if (list.isEmpty || sampleSize <= 0) {
+List<int> basitRastgeleOrnekleme(int kucukDeger, int buyukDeger, int ornekSayisi) {
+  if (kucukDeger >= buyukDeger || ornekSayisi <= 0) {
     return [];
   }
-  final random = Random();
-  final sample = <double>[];
-  final usedIndices = <int>{};
 
-  if (sampleSize <= list.length) {
-    // Aynı elemanları tekrar etme
-    while (sample.length < sampleSize) {
-      final randomIndex = random.nextInt(list.length);
-      if (!usedIndices.contains(randomIndex)) {
-        usedIndices.add(randomIndex);
-        sample.add(list[randomIndex]);
-      }
+  final rastgele = Random();
+  final orneklem = <int>[];
+  final aralik = buyukDeger - kucukDeger + 1;
+
+  if (ornekSayisi <= aralik) {
+
+    final secilenler = <int>{};
+    while (secilenler.length < ornekSayisi) {
+      secilenler.add(kucukDeger + rastgele.nextInt(aralik));
     }
+    orneklem.addAll(secilenler.toList());
   } else {
-    // Aynı elemanları tekrar et
-    for (int i = 0; i < sampleSize; i++) {
-      final randomIndex = random.nextInt(list.length);
-      sample.add(list[randomIndex]);
+
+    for (int i = 0; i < ornekSayisi; i++) {
+      orneklem.add(kucukDeger + rastgele.nextInt(aralik));
     }
   }
-
-  return sample;
+  return orneklem;
 }
-
-
-
-
-
-
-List<double> getSequentialSample(List<double> list, int sampleSize) {
-  if (list.isEmpty || sampleSize <= 0 || sampleSize > list.length) {
-    return [];
-  }
-
-  return list.sublist(0, sampleSize);
-}
-
-
 
 
 
 Map<double, int> getFrequencySeries(List<double> list) {
   final frequencyMap = <double, int>{};
-
   for (final value in list) {
     frequencyMap.update(value, (count) => count + 1, ifAbsent: () => 1);
   }
-
   return frequencyMap;
 }
+
+
+
+
+
+
+
+List<int> sistematikRastgeleOrnekleme(int buyukDeger, int ornekSayisi) {
+  if (buyukDeger <= 0 || ornekSayisi <= 0 || buyukDeger < ornekSayisi) {
+    return [];
+  }
+
+  final rastgele = Random();
+  final orneklem = <int>[];
+  final N = buyukDeger;
+
+  final k = N ~/ ornekSayisi;
+  if (k <= 0) {
+    return [];
+  }
+
+  final ilkSecim = 1 + rastgele.nextInt(k);
+
+  for (int i = 0; i < ornekSayisi; i++) {
+    final indeks = ilkSecim + i * k;
+    if (indeks <= N) {
+      orneklem.add(indeks);
+    } else {
+      break;
+    }
+  }
+
+  return orneklem;
+}
+
+
+
+
+
 
 
 
@@ -208,4 +227,12 @@ List<int> calculateCumulativeFrequencies(List<int> frequencies) {
     cumulativeFrequencies.add(sum);
   }
   return cumulativeFrequencies;
+}
+
+// kucukten bbuyuge
+
+List<double> sortList(List<double> list) {
+  final sortedList = List<double>.from(list);
+  sortedList.sort();
+  return sortedList;
 }

@@ -25,13 +25,18 @@ class _DetailScreenState extends State<DetailScreen> {
   int smallValue = 0;
   int largeValue = 0;
   int count = 0;
-
-  final TextEditingController _sampleSizeController = TextEditingController();
-  final TextEditingController _smallValueController = TextEditingController();
-  final TextEditingController _largeValueController = TextEditingController();
-  final TextEditingController _countController = TextEditingController();
+  List<int> rastgeleOrneklem = [];
+  List<int> sistematikOrneklem = [];
 
   int sampleSize = 0;
+  final TextEditingController _smallValueController = TextEditingController();
+  final TextEditingController _largeValueController = TextEditingController();
+  final TextEditingController _sampleSizeController = TextEditingController();
+
+
+  final TextEditingController _countController = TextEditingController();
+
+
   final TextEditingController _controller = TextEditingController();
 
   List<double> getRandomSample(List<double> list, int sampleSize) {
@@ -85,19 +90,9 @@ class _DetailScreenState extends State<DetailScreen> {
       content = Column(
         children: [
           TextField(
-            controller: _smallValueController,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(labelText: 'Küçük Değer Girin'),
-            onChanged: (value) {
-              setState(() {
-                smallValue = int.tryParse(value) ?? 0;
-              });
-            },
-          ),
-          TextField(
             controller: _largeValueController,
             keyboardType: TextInputType.number,
-            decoration: InputDecoration(labelText: 'Büyük Değer Girin'),
+            decoration: InputDecoration(labelText: 'Buyuk N'),
             onChanged: (value) {
               setState(() {
                 largeValue = int.tryParse(value) ?? 0;
@@ -107,7 +102,7 @@ class _DetailScreenState extends State<DetailScreen> {
           TextField(
             controller: _sampleSizeController,
             keyboardType: TextInputType.number,
-            decoration: InputDecoration(labelText: 'Örneklem Boyutu Girin'),
+            decoration: InputDecoration(labelText: 'Kucuk n'),
             onChanged: (value) {
               setState(() {
                 sampleSize = int.tryParse(value) ?? 0;
@@ -117,14 +112,16 @@ class _DetailScreenState extends State<DetailScreen> {
           ElevatedButton(
             onPressed: () {
               setState(() {
-
+                sistematikOrneklem = sistematikRastgeleOrnekleme(largeValue, sampleSize);
               });
             },
             child: Text('Sistematik Örnekleme Yap'),
           ),
-          if (sampleSize > 0) ...generateSystematicSample(smallValue, largeValue, sampleSize).map((value) => Text(value.toString())).toList(),
+          if (sistematikOrneklem.isNotEmpty)
+            ...sistematikOrneklem.map((value) => Text(value.toString())).toList(),
         ],
       );
+
     }
     else if (widget.pageNumber == 3) {
       content = Column(
@@ -152,38 +149,33 @@ class _DetailScreenState extends State<DetailScreen> {
       );
     }
     else if (widget.pageNumber == 4) {
+      final sortedList = sortList(widget.itemList);
+
       content = Column(
         children: [
-          TextField(
-            controller: _controller,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(labelText: 'Örnekleme Sayısı Girin'),
-            onChanged: (value) {
-              setState(() {
-                sampleSize = int.tryParse(value) ?? 0;
-              });
-            },
-          ),
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-
-              });
-            },
-            child: Text('Örnekleme Yap'),
-          ),
-          if (sampleSize > 0) ...getSequentialSample(widget.itemList, sampleSize).map((value) => Text(value.toString())).toList(),
+          Text('Basit seri'),
+          ...sortedList.map((value) => Text(value.toString())).toList(),
         ],
       );
+
+
     }
     else if (widget.pageNumber == 5) {
       final frequencyMap = getFrequencySeries(widget.itemList);
+
+
+      final sortedKeys = frequencyMap.keys.toList()..sort();
+
       content = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Frekans Serisi:'),
-          for (final entry in frequencyMap.entries) Text('${entry.key}: ${entry.value}'),
+          Text('Frekans serisi'),
+          SizedBox(height: 8),
+          for (final key in sortedKeys)
+            Text('${key}: ${frequencyMap[key]}'),
         ],
       );
+
     }
     else if (widget.pageNumber == 6) {
       final classCount = calculateClassCount(widget.itemList);
@@ -249,27 +241,32 @@ class _DetailScreenState extends State<DetailScreen> {
             },
           ),
           TextField(
-            controller: _countController,
+            controller: _sampleSizeController,
             keyboardType: TextInputType.number,
-            decoration: InputDecoration(labelText: 'Rastgele Değer Sayısı Girin'),
+            decoration: InputDecoration(labelText: 'Örnek Sayısı Girin'),
             onChanged: (value) {
               setState(() {
-                count = int.tryParse(value) ?? 0;
+                sampleSize = int.tryParse(value) ?? 0;
               });
             },
           ),
           ElevatedButton(
             onPressed: () {
               setState(() {
-
+                rastgeleOrneklem = basitRastgeleOrnekleme(smallValue, largeValue, sampleSize);
               });
             },
-            child: Text('Rastgele Değerler Üret'),
+            child: Text('Basit Rastgele Örnekleme Yap'),
           ),
-          if (count > 0) ...generateRandomIntValues(smallValue.toInt(), largeValue.toInt(), count).map((value) => Text(value.toString())).toList(),
+          if (rastgeleOrneklem.isNotEmpty)
+            ...rastgeleOrneklem.map((value) => Text(value.toString())).toList(),
         ],
       );
     }
+
+
+
+
     else {
       content = Text('${widget.pageNumber}. Sayfanın İçeriği');
     }
